@@ -3,5 +3,6 @@ class StaticPagesController < ApplicationController
   end
 
   def about
-  
+  end
+  # Added end to the about method
 end

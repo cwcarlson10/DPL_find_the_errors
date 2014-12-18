@@ -2,7 +2,7 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   def index
-    @task = Task.all
+    @tasks = Task.all
   end
 
   def show
@@ -10,6 +10,7 @@ class TasksController < ApplicationController
 
   def new
     @task = Task.new
+    
   end
 
   def edit
@@ -18,15 +19,15 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     if @task.save
-      redirect_to @task, notice: 'Task was successfully created.'
+      redirect_to task_path(@task), notice: 'Task was successfully created.'
     else
       render :new
     end
   end
 
   def update
-    if @task.update(task_params)
-      redirect_to @tasks, notice: 'Task was successfully updated.'
+    if @task.update_attributes(task_params)
+      redirect_to task_path(@task), notice: 'Task was successfully updated.'
     else
       render :edit
     end
@@ -38,11 +39,16 @@ class TasksController < ApplicationController
   end
 
   private
-    def set_tasks
+    def set_task
+      # Deleted the s from task so that the before action would recognise the method
       @task = Task.find(params[:id])
     end
 
     def task_params
-      params.require(:task).permit(:priority)
+      params.require(:task).permit(:priority, :description)
     end
 end
+
+# I fixed this by typing @task in to the better errors console 
+    # and it came up as nil so I looked in the controller to find 
+    # that the it was definded as @task instead of @tasks in the index method
